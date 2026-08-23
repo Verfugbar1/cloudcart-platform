@@ -1,0 +1,27 @@
+.env
+.env.*
+.venv/
+.venv-linux/
+__pycache__/
+.pytest_cache/
+*.pyc
+*.pem
+d
+d.pub
+important commands.txt# Environment variables
+.env
+.env.*
+
+# Python virtual environments
+.venv/
+.venv-linux/
+
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# SSH/private keys
+*.pem
+d
+important commands.txt
