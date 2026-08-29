@@ -17,6 +17,24 @@ jobs:
     name: Test Product Service
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: cloudcart_app
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: cloudcart
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U cloudcart_app -d cloudcart"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql+psycopg://cloudcart_app:password@localhost:5432/cloudcart
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
