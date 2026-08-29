@@ -30,4 +30,4 @@ def test_create_invalid_product():
         },
     )
 
-    assert response.status_code == 500
+    assert response.status_code == 422
