@@ -1,7 +1,14 @@
 from contextlib import asynccontextmanager
+import logging
+import os
+
+from azure.monitor.opentelemetry import configure_azure_monitor
+
+if os.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING"):
+    configure_azure_monitor()
 
 from fastapi import FastAPI
-import logging
+
 from app.logging_config import configure_logging
 from app.middleware.request_id import request_id_middleware
 from app.routes.health import router as health_router
@@ -26,10 +33,10 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-
 app.middleware("http")(request_id_middleware)
 
 app.include_router(health_router)
+
 app.include_router(
     product_router,
     prefix="/api/v1",
