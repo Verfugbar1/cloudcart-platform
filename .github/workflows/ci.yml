@@ -9,13 +9,13 @@ on:
     branches:
       - main
 
-permissions:
-  contents: read
-
 jobs:
   test:
     name: Test Product Service
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
 
     services:
       postgres:
@@ -50,6 +50,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Audit Python dependencies
+        working-directory: services/product-service
+        run: |
+          pip install pip-audit
+          pip-audit -r requirements.txt
+
       - name: Run database migrations
         working-directory: services/product-service
         run: |
@@ -59,3 +65,17 @@ jobs:
         working-directory: services/product-service
         run: |
           pytest -v
+
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
